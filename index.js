@@ -28,7 +28,9 @@ window.addEventListener('load', () => {
 		const port2 = gpio.ports.get(193);
 		port2.export('in').then(() => {
 			console.log('port:', port2);
-			textarea.value += port2.read();
+			port2.read().then((value) => {
+				log(value);
+			});
 		});
 	});
 });
