@@ -10,6 +10,7 @@ const log = (text) => {
 ☆二　⊂(・ω・｀)\
 　　　　-ヽ　　と)\
 　　　　　｀ｕ-ｕ'"
+	//textarea.scrollTop = textarea.scrollHeight;
 };
 
 window.addEventListener('load', () => {
