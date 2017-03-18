@@ -36,7 +36,8 @@ window.addEventListener('load', () => {
 		const buttonPort = gpio.ports.get(199);
 		buttonPort.export('in').then(() => {
 			buttonPort.onchange = function(state2) {
-				document.body.style.backgroundColor = state2 ? 'red' : 'white';
+				log(state2 ? 'a' : 'b');
+				document.body.style.backgroundColor = state2 ? 'blue' : 'white';
 				state2 != state2;
 			}
 		});
