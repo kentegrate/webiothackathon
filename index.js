@@ -12,16 +12,11 @@ window.addEventListener('load', () => {
 		return port.export('out');
 	}).then(() => {
 		console.log('port exported');
+		document.body.style.backgroundColor = 'red';
 		setInterval(() => {
 			console.log(state ? 'on' : 'off');
 			port.write(state ? 1 : 0);
-
-			if (state) {
-				document.body.style.backgroundColor = 'red';
-			} else {
-				document.body.style.backgroundColor = 'white'
-			}
-
+			document.body.style.backgroundColor = state ? 'red' : 'white';
 			state = !state;
 		}, 1000);
 	});
