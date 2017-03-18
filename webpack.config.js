@@ -8,5 +8,13 @@ module.exports = {
 		filename: 'build/index.js',
 	},
 	module: {
+		loaders: [{
+			test: /\.jsx$/,
+			loader: 'babel-loader',
+			exclude: /node_modules/,
+			query: {
+				presets: ['react'],
+			},
+		}],
 	},
 };
