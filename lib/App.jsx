@@ -1,9 +1,9 @@
 const React = require('react');
 
-const startPoint = [5, 35];
+const startPoint = [5, 55];
 const startAngle = Math.PI / 180 * 90;
 const unitLength = 10;
-const lines = [3, 3, 3, 2, 2, 1, 1];
+const lines = [5, 5, 5, 4, 4, 3, 3, 2, 2, 1, 1];
 
 class App extends React.Component {
 	constructor(props, state) {
@@ -27,7 +27,17 @@ class App extends React.Component {
 			]);
 		});
 
-		return `M ${points.map((point) => point.join(' ')).join(' L ')}`;
+		const midPoints = [];
+
+		points.reduce((previous, current) => {
+			midPoints.push([
+				(previous[0] + current[0]) / 2,
+				(previous[1] + current[1]) / 2,
+			]);
+			return current;
+		});
+
+		return `M ${points[0].join(' ')} L ${midPoints[0].join(' ')} ${midPoints.slice(1).map((point, index) => `Q ${points[index + 1].join(' ')} ${point.join(' ')}`).join(' ')}`;
 	}
 
 	render() {
