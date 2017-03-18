@@ -4,6 +4,7 @@
 		<meta charset="utf-8">
 		<title>Lチカでチカチカ</title>
 		<script src="polyfill/webgpio.js" async></script>
+		<script src="polyfill/webi2c.js" async></script>
 		<script src="build/index.js" async></script>
 	</head>
 	<body>
@@ -11,6 +12,6 @@
 		<h2>Debug</h2>
 		<textarea id="textarea" rows="20" cols="80"></textarea>
 		<div id="app"></div>
-		<button type="button">PWM 回すよ</button>
+		<button type="button" id="pwm_button">PWM 回すよ</button>
 	</body>
 </html>
