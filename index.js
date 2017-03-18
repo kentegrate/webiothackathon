@@ -4,6 +4,7 @@ let state = false;
 const log = (text) => {
 	console.log(text);
 	textarea.value += `${text}\n`;
+	textarea.scrollTop = textarea.scrollHeight;
 };
 
 window.addEventListener('load', () => {
