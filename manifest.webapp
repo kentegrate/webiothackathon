@@ -1,0 +1,12 @@
+{
+  "name": "TestChirimenApp",
+  "description": "Test Chirimen App",
+  "type": "certified",
+  "launch_path": "/index.html",
+  "developer": {
+    "name": "Team 'G'",
+    "url": "https://github.com/kentegrate/webiothackathon"
+  },
+  "icons": {
+  }
+}
