@@ -1,19 +1,67 @@
-(function(){const DIRECTION_MODE = {
-  IN: 'in',
-  OUT: 'out',
+(function(){var ab2json = (dataBuffer) => JSON.parse(String.fromCharCode.apply(null, new Uint16Array(dataBuffer)));
+var json2ab = (jsonData) => {
+  var strJson = JSON.stringify(jsonData);
+  var buf = new ArrayBuffer(strJson.length * 2);
+  var uInt8Array = new Uint16Array(buf);
+  for (var i = 0, strLen = strJson.length; i < strLen; i++) {
+    uInt8Array[i] = strJson.charCodeAt(i);
+  }
+
+  return uInt8Array;
 };
 
-const IO = {
-  ROW: 0,
-  HIGH: 1,
-};
+/**
+ * @example setting ovserve function
+ *   global.MockOvserve.observe('xxxxx_xxxxx_xxxxx', function(updateJson){
+ *     stateCtrl.setJsonData(updateJson);
+ *   });
+ *
+ * @example nofify method (parameter single only)
+ *   global.MockOvserve.notify('xxxxx_xxxxx_xxxxx', { param: 'PARAM' });
+ **/
+window.WorkerOvserve = window.WorkerOvserve || (function () {
+
+  function Ovserve() {
+    this._Map = new Map();
+  }
+
+  // set ovserver
+  Ovserve.prototype.observe = function (name, fnc) {
+    var funcs = this._Map.get(name) || [];
+    funcs.push(fnc);
+    this._Map.set(name, funcs);
+  };
+
+  // remove ovserver
+  Ovserve.prototype.unobserve = function (name, func) {
+    var funcs = this._Map.get(name) || [];
+    this._Map.set(name, funcs.filter(function (_func) {
+      return _func !== func;
+    }));
+  };
+
+  // notify ovserve
+  Ovserve.prototype.notify = function (name) {
+    var args = Array.prototype.slice.call(arguments, 1);
+    /* istanbul ignore next */
+    (this._Map.get(name) || []).forEach(function (func, index) {
+      func.apply(null, args);
+    });
+  };
+
+  // delete map
+  // delete
+  Ovserve.prototype.delete = function (name) {
+    this._Map.delete(name);
+  };
+
+  return new Ovserve();
+})();
 
 const PORT_CONFIG = {
   // https://docs.google.com/spreadsheets/d/1pVgK-Yy09p9PPgNgojQNLvsPjDFAOjOubgNsNYEQZt8/edit#gid=0
   CHIRIMEN: {
     PORTS: {
-      256: { portName: 'CN1.I2C2_SDA', pinName: '2', },
-      257: { portName: 'CN1.I2C2_SCL', pinName: '3', },
       283: { portName: 'CN1.UART3_RX', pinName: '4', },
       284: { portName: 'CN1.UART3_TX', pinName: '5', },
       196: { portName: 'CN1.SPI0_CS',  pinName: '7', },
@@ -25,8 +73,6 @@ const PORT_CONFIG = {
       246: { portName: 'CN1.SPI1_RX',  pinName: '13', },
       245: { portName: 'CN1.SPI1_TX',  pinName: '14', },
       163: { portName: 'CN2.PWM0',     pinName: '10', },
-      253: { portName: 'CN2.I2C0_SCL', pinName: '11', },
-      252: { portName: 'CN2.I2C0_SDA', pinName: '12', },
       193: { portName: 'CN2.UART0_TX', pinName: '13', },
       192: { portName: 'CN2.UART0_RX', pinName: '14', },
       353: { portName: 'CN2.GPIO6_A1', pinName: '15', },
@@ -55,11 +101,18 @@ GPIOAccess.prototype = {
   init: function (port) {
     this.ports = new GPIOPortMap();
     var convertToNumber = portStr => parseInt(portStr, 10);
-    var setPortMap = port=> this.ports.set(port, new GPIOPort(port));
-    /**
-    * @todo How to get the pin list?
-    ***/
-    Object.keys(PORT_CONFIG.CHIRIMEN.PORTS).map(convertToNumber).forEach(setPortMap);
+
+    var makeChain = port => ()=> new Promise(resolve=> {
+      window.WorkerOvserve.observe(`gpio.export.${port}`, () => resolve());
+      this.ports.set(port, new GPIOPort(port));
+    });
+
+    var exportChain = (chain, next) => chain.then(next);
+
+    this.GPIOAccessThen = Object.keys(PORT_CONFIG.CHIRIMEN.PORTS)
+      .map(convertToNumber)
+      .map(makeChain)
+      .reduce(exportChain, Promise.resolve());
   },
 
   /**
@@ -235,13 +288,13 @@ GPIOPort.prototype = {
     //var readGPIO = ()=> navigator.mozGpio.getValue(this.portNumber);
     var readGPIO = () => new Promise((resolve, reject) => {
 
+      window.WorkerOvserve.observe(`gpio.getValue.${this.portNumber}`, (workerData) => {
+        resolve(workerData.value);
+      });
+
       window.WorkerOvserve.notify('gpio', {
         method: 'gpio.getValue',
         portNumber: this.portNumber,
-      });
-
-      window.WorkerOvserve.observe(`gpio.getValue.${this.portNumber}`, (workerData) => {
-        resolve(workerData.value);
       });
 
     });
@@ -261,7 +314,7 @@ GPIOPort.prototype = {
         reject(new Error('InvalidAccessError'));
       } else if (!this.__isOutput()) {
         reject(new Error('OperationError'));
-      } else if (value !== IO.ROW && value !== IO.HIGH) {
+      } else if (value !== IO.LOW && value !== IO.HIGH) {
         reject(new Error('OperationError'));
       }
 
@@ -319,66 +372,17 @@ var GPIOPortMap = Map;
 /* istanbul ignore else */
 if (!navigator.requestGPIOAccess) {
   navigator.requestGPIOAccess = function () {
-    return new Promise(resolve=> resolve(new GPIOAccess()));
+    //return new Promise(resolve=> resolve(new GPIOAccess()));
+
+    var gpioAccess = new GPIOAccess();
+    return gpioAccess.GPIOAccessThen.then(()=> gpioAccess);
   };
 }
 
-var ab2json = (dataBuffer) => JSON.parse(String.fromCharCode.apply(null, new Uint16Array(dataBuffer)));
-var json2ab = (jsonData) => {
-  var strJson = JSON.stringify(jsonData);
-  var buf = new ArrayBuffer(strJson.length * 2);
-  var uInt8Array = new Uint16Array(buf);
-  for (var i = 0, strLen = strJson.length; i < strLen; i++) {
-    uInt8Array[i] = strJson.charCodeAt(i);
-  }
 
-  return uInt8Array;
-};
-
-/**
- * @example setting ovserve function
- *   global.MockOvserve.observe('xxxxx_xxxxx_xxxxx', function(updateJson){
- *     stateCtrl.setJsonData(updateJson);
- *   });
- *
- * @example nofify method (parameter single only)
- *   global.MockOvserve.notify('xxxxx_xxxxx_xxxxx', { param: 'PARAM' });
- **/
-window.WorkerOvserve = window.WorkerOvserve || (function () {
-
-  function Ovserve() {
-    this._Map = new Map();
-  }
-
-  // set ovserver
-  Ovserve.prototype.observe = function (name, fnc) {
-    var funcs = this._Map.get(name) || [];
-    funcs.push(fnc);
-    this._Map.set(name, funcs);
-  };
-
-  // remove ovserver
-  Ovserve.prototype.unobserve = function (name, func) {
-    var funcs = this._Map.get(name) || [];
-    this._Map.set(name, funcs.filter(function (_func) {
-      return _func !== func;
-    }));
-  };
-
-  // notify ovserve
-  Ovserve.prototype.notify = function (name) {
-    var args = Array.prototype.slice.call(arguments, 1);
-    /* istanbul ignore next */
-    (this._Map.get(name) || []).forEach(function (func, index) {
-      func.apply(null, args);
-    });
-  };
-
-  return new Ovserve();
-})();
 
 /* istanbul ignore next */
-if (window.Worker) {
+if (window.Worker && window.WorkerOvserve) {
 
   var current = (function () {
     if (document.currentScript) {
@@ -392,15 +396,10 @@ if (window.Worker) {
     }
   })();
 
-  var _worker = new Worker(`${current.substr(0, current.lastIndexOf('/'))}/worker.js`);
+  var _worker = new Worker(`${current.substr(0, current.lastIndexOf('/'))}/worker.gpio.js`);
 
   // @MEMO gpioとi2cのObserverを分けた意味は「まだ」特にない
   window.WorkerOvserve.observe('gpio', function (jsonData) {
-    var ab = json2ab(jsonData);
-    _worker.postMessage(ab.buffer, [ab.buffer]);
-  });
-
-  window.WorkerOvserve.observe('i2c', function (jsonData) {
     var ab = json2ab(jsonData);
     _worker.postMessage(ab.buffer, [ab.buffer]);
   });
@@ -411,4 +410,13 @@ if (window.Worker) {
   };
 }
 
+const DIRECTION_MODE = {
+  IN: 'in',
+  OUT: 'out',
+};
+
+const IO = {
+  LOW: 0,
+  HIGH: 1,
+};
 })()
