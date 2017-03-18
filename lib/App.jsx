@@ -1,6 +1,9 @@
 const React = require('react');
+const CSSModules = require('react-css-modules');
+
 const Snake = require('./Snake.jsx');
 const Animal = require('./Animal.jsx');
+const styles = require('./App.css');
 
 class App extends React.Component {
 	constructor(props, state) {
@@ -9,7 +12,7 @@ class App extends React.Component {
 
 	render() {
 		return (
-			<svg viewBox="0 0 100 100" width="300px" height="300px" version="1.1" xmlns="http://www.w3.org/2000/svg" style={{border: '1px solid black', background: 'white'}}>
+			<svg styleName="root" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg">
 				<Snake x={0} y={0} />
 				<Animal x={60} y={60} name="オカピ" />
 				<Animal x={60} y={60} name="オカピ" />
@@ -21,4 +24,4 @@ class App extends React.Component {
 	}
 }
 
-module.exports = App;
+module.exports = CSSModules(App, styles);
