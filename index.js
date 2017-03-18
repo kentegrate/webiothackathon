@@ -5,10 +5,10 @@ const log = (text) => {
 	console.log(text);
 	textarea.value += `${text}\n`;
 	textarea.value = 
-"エイッ!! \
-　　　　∧,,∧\
-☆二　⊂(・ω・｀)\
-　　　　-ヽ　　と)\
+"エイッ!!\n \
+　　　　∧,,∧\n\
+☆二　⊂(・ω・｀)\n\
+　　　　-ヽ　　と)\n\
 　　　　　｀ｕ-ｕ'"
 	//textarea.scrollTop = textarea.scrollHeight;
 };
