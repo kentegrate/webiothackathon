@@ -12,7 +12,7 @@ window.addEventListener('load', () => {
 	navigator.requestGPIOAccess().then((gpio) => {
 		console.log('gpio:', gpio);
 		
-		/*const port = gpio.ports.get(244);
+		const port = gpio.ports.get(244);
 		port.export('out').then(() => {
 			console.log('port:', port);
 			port.write(1);
@@ -23,7 +23,7 @@ window.addEventListener('load', () => {
 				log(state ? 'on' : 'off');
 				document.body.style.backgroundColor = state ? 'red' : 'white';
 			}, 1000);
-		});*/
+		});
 		
 		const port2 = gpio.ports.get(193);
 		port2.export('in').then(() => {
@@ -35,9 +35,9 @@ window.addEventListener('load', () => {
 
 		const buttonPort = gpio.ports.get(199);
 		buttonPort.export('in').then(() => {
-			buttonPort.onchange = function(state) {
-				document.body.style.backgroundColor = state ? 'red' : 'white';
-				state != state;
+			buttonPort.onchange = function(state2) {
+				document.body.style.backgroundColor = state2 ? 'red' : 'white';
+				state2 != state2;
 			}
 		});
 	});
