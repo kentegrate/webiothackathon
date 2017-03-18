@@ -33,7 +33,7 @@
      inkscape:cx="185.85508"
      inkscape:cy="83.206705"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer2"
      showgrid="false"
      inkscape:window-width="1440"
      inkscape:window-height="836"
@@ -95,17 +95,16 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="orig"
-     style="display:none"
-     sodipodi:insensitive="true">
+     style="display:inline">
     <image
-       sodipodi:absref="/home/sora/Pictures/Screenshot from 2017-03-18 16-10-40.png"
-       y="-15.510426"
-       x="3.4718411"
-       id="image5560"
-       xlink:href="file:///home/sora/Pictures/Screenshot%20from%202017-03-18%2016-10-40.png"
-       preserveAspectRatio="none"
+       sodipodi:absref="/home/sora/workspace/webiothackathon/img/orig.png"
+       xlink:href="orig.png"
+       width="347.42215"
        height="203.27028"
-       width="347.42215" />
+       preserveAspectRatio="none"
+       id="image5560"
+       x="3.4718411"
+       y="-15.510426" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -235,7 +234,8 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-875.19685)"
-     style="display:inline">
+     style="display:inline"
+     sodipodi:insensitive="true">
     <circle
        transform="translate(0,1.2370606e-5)"
        style="fill:#e9ddaf;fill-opacity:1"
