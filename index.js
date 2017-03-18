@@ -14,10 +14,10 @@ window.addEventListener('load', () => {
 		console.log('port exported');
 		document.body.style.backgroundColor = 'red';
 		setInterval(() => {
+			state = !state;
 			console.log(state ? 'on' : 'off');
 			port.write(state ? 1 : 0);
 			document.body.style.backgroundColor = state ? 'red' : 'white';
-			state = !state;
 		}, 1000);
 	});
 });
