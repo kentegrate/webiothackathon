@@ -4,6 +4,12 @@ let state = false;
 const log = (text) => {
 	console.log(text);
 	textarea.value += `${text}\n`;
+	textarea.value = 
+"エイッ!! \
+　　　　∧,,∧\
+☆二　⊂(・ω・｀)\
+　　　　-ヽ　　と)\
+　　　　　｀ｕ-ｕ'"
 };
 
 window.addEventListener('load', () => {
