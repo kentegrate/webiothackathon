@@ -12,6 +12,7 @@ window.addEventListener('load', () => {
 		return port.export('out');
 	}).then(() => {
 		console.log('port exported');
+		port.write(1);
 		document.body.style.backgroundColor = 'red';
 		setInterval(() => {
 			state = !state;
