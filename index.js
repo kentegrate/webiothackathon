@@ -20,4 +20,6 @@ window.addEventListener('load', () => {
 			document.body.style.backgroundColor = state ? 'red' : 'white';
 		}, 1000);
 	});
+
+	setTimeout(() => { location.reload(true); }, 20000);
 });
