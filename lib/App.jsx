@@ -10,9 +10,29 @@ class App extends React.Component {
 		super(props, state);
 		this.state = {
 			animals: [{
-				x: 70,
-				y: 50,
+				x: 100,
+				y: 35,
 				name: 'キリン',
+			}, {
+				x: 45,
+				y: 68,
+				name: 'ヘビ',
+			}, {
+				x: 140,
+				y: 23,
+				name: 'カバ',
+			}, {
+				x: 150,
+				y: 50,
+				name: 'シマウマ',
+			}, {
+				x: 120,
+				y: 70,
+				name: 'カンガルー',
+			}, {
+				x: 97,
+				y: 82,
+				name: 'ペンギン',
 			}],
 		};
 	}
