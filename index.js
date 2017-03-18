@@ -8,7 +8,7 @@ window.addEventListener('load', () => {
 
 		textarea.value = JSON.stringify(ports, '  ', 2);
 
-		const port = gpio.ports.get(198);
+		const port = gpio.ports.get(244);
 		return port.export('out').then(() => port);
 	}).then((port) => {
 		console.log('port:', port);
