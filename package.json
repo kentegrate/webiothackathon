@@ -4,5 +4,9 @@
   "main": "index.js",
   "repository": "https://github.com/kentegrate/webiothackathon.git",
   "author": "Koki Takahashi <hakatasiloving@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  }
 }
