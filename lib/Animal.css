@@ -1,0 +1,7 @@
+.animal {
+	transition: all 0.3s;
+}
+
+.animal[data-active=true] {
+	transform: scale(1.2);
+}
