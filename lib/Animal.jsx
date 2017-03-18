@@ -14,7 +14,7 @@ class Animal extends React.Component {
 	render() {
 		return (
 			<g transform={translate(this.props)}>
-				<circle cx="0" cy="0" r="5" fill="pink" />
+				<circle cx="0" cy="0" r="10" fill="pink" stroke={this.props.active ? 'red' : 'none'} />
 				<text x="0" y="0" fontSize="4px" textAnchor="middle" fontWeight="bold">{this.props.name}</text>
 			</g>
 		)

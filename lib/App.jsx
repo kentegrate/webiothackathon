@@ -34,6 +34,7 @@ class App extends React.Component {
 				y: 82,
 				name: 'ペンギン',
 			}],
+			activeAnimal: 'キリン',
 		};
 	}
 
@@ -43,7 +44,7 @@ class App extends React.Component {
 				<image x="0" y="0" width="100%" height="100%" xlinkHref="img/park_editable.svg" />
 				<Snake x={0} y={0} />
 				{this.state.animals.map((animal) => (
-					<Animal key={animal.name} x={animal.x} y={animal.y} name={animal.name} />
+					<Animal key={animal.name} x={animal.x} y={animal.y} name={animal.name} active={this.state.activeAnimal === animal.name} />
 				))}
 			</svg>
 		);
