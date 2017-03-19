@@ -18,23 +18,15 @@ class App extends React.Component {
 				y: 68,
 				name: 'ヘビ',
 			}, {
-				x: 140,
-				y: 23,
-				name: 'カバ',
-			}, {
 				x: 150,
 				y: 50,
 				name: 'シマウマ',
-			}, {
-				x: 120,
-				y: 70,
-				name: 'カンガルー',
 			}, {
 				x: 97,
 				y: 82,
 				name: 'ペンギン',
 			}],
-			activeAnimal: 'キリン',
+			activeAnimal: null,
 		};
 	}
 
