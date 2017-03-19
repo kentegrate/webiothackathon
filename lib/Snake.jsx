@@ -1,5 +1,7 @@
 const React = require('react');
+
 const {translate} = require('./util.js');
+const adc121 = require('./ADC121.js')
 
 const startPoint = [5, 55];
 const startAngle = Math.PI / 180 * 90;
@@ -9,9 +11,21 @@ const lines = [5, 5, 5, 4, 4, 3, 3, 2, 2, 1, 1];
 class Snake extends React.Component {
 	constructor(props, state) {
 		super(props, state);
+
 		this.state = {
 			angle: Math.PI / 180 * 90,
 		};
+
+		navigator.requestI2CAccess().then((i2cAccess) => {
+			const i2cPort = i2cAccess.ports.get(0);
+			return adc121(i2cPort);
+		}).then((sensor) => {
+			setInterval(() => {
+				const voltage = sensor.read();
+				console.log("voltage:", voltage);
+				this.setState({angle: voltage / 2});
+			}, 100);
+		});;
 	}
 
 	getSnakePath() {
