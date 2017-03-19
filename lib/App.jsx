@@ -38,25 +38,23 @@ class App extends React.Component {
 			}],
 			activeAnimal: null,
 			pointerAngle: 0,
+			isReady: true,
 		};
 
-		this.pca9685 = navigator.requestI2CAccess().then((i2cAccess) => {
-			const i2cPort = i2cAccess.ports.get(0);
-			return pca9685(i2cPort);
-		}).then((servo) => {
+		Promise.all([
+			navigator.requestI2CAccess().then((i2cAccess) => {
+				const i2cPort = i2cAccess.ports.get(0);
+				return pca9685(i2cPort);
+			}),
+			navigator.requestI2CAccess().then((i2cAccess) => {
+				const i2cPort = i2cAccess.ports.get(0);
+				return mpr121(i2cPort);
+			}),
+		]).then(([servo, touchSensor]) => {
+			this.setState({isReady: false});
 			this.servo = servo;
-		});
-
-		this.mpr121 = navigator.requestI2CAccess().then((i2cAccess) => {
-			console.log('(app) i2cAccess:', i2cAccess);
-			const i2cPort = i2cAccess.ports.get(0);
-			console.log('(app) i2cPort:', i2cPort);
-			return mpr121(i2cPort);
-		}).then((touchSensor) => {
 			touchSensor.addEventListener('stateChange', (pin, state) => {
-				console.log('(app) pin:', pin);
-				console.log('(app) state:', state);
-				if(state) {
+				if (state) {
 					this.onClickAnimal(this.state.animals[pin].name);
 				}
 			});
@@ -89,6 +87,9 @@ class App extends React.Component {
 					<circle cx="0" cy="0" r="2" fill="red" />
 					<text x="0" y="7" fontSize="5" textAnchor="middle">現在地</text>
 				</g>
+				{this.state.isReady && (
+					<rect x="0" y="0" width="200" height="100" fill="black" opacity="0.5" />
+				)}
 			</svg>
 		);
 	}
