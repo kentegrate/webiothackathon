@@ -4,7 +4,9 @@ const CSSModules = require('react-css-modules');
 const Snake = require('./Snake.jsx');
 const Animal = require('./Animal.jsx');
 const styles = require('./App.css');
-const {translate} = require('./util.js');
+const {translate, distance, angle} = require('./util.js');
+
+const currentPlace = {x: 137, y: 37};
 
 class App extends React.Component {
 	constructor(props, state) {
@@ -33,6 +35,8 @@ class App extends React.Component {
 
 	onClickAnimal(name) {
 		this.setState({activeAnimal: name});
+		const activeAnimal = this.state.animals.find((animal) => animal.name === name);
+		console.log(distance(currentPlace, activeAnimal), angle(currentPlace, activeAnimal));
 	}
 
 	render() {
