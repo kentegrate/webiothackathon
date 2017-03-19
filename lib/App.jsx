@@ -41,6 +41,8 @@ class App extends React.Component {
 			isReady: true,
 		};
 
+        this.myAudio = new Audio("./sound/select_sound.ogg");
+
 		Promise.all([
 			navigator.requestI2CAccess().then((i2cAccess) => {
 				const i2cPort = i2cAccess.ports.get(0);
@@ -66,6 +68,11 @@ class App extends React.Component {
 	onClickAnimal(name) {
 		this.setState({activeAnimal: name});
 		const activeAnimal = this.state.animals.find((animal) => animal.name === name);
+
+		if(this.myAudio) {
+			this.myAudio.load();
+			this.myAudio.play();
+		}
 
 		if (this.servo) {
 			const pointerAngle = angle(currentPlace, activeAnimal) / Math.PI * 180 + 90;
