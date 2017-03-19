@@ -18,18 +18,22 @@ class App extends React.Component {
 				x: 100,
 				y: 35,
 				name: 'キリン',
+                img: './img/animalface_kirin.png',
 			}, {
 				x: 45,
 				y: 68,
 				name: 'ヘビ',
+                img: './img/hebi_blue.png',
 			}, {
 				x: 150,
 				y: 50,
 				name: 'シマウマ',
+                img: './img/animal_shimauma.png',
 			}, {
 				x: 97,
 				y: 82,
 				name: 'ペンギン',
+                img: './img/penguin03_gentoo.png',
 			}],
 			activeAnimal: null,
 		};
@@ -59,7 +63,7 @@ class App extends React.Component {
 				<text x="10" y="15" fontSize="8" textAnchor="left">上野動物園 西園 案内図</text>
 				<Snake x={33} y={51} />
 				{this.state.animals.map((animal) => (
-					<Animal key={animal.name} x={animal.x} y={animal.y} name={animal.name} active={this.state.activeAnimal === animal.name} onClick={this.onClickAnimal.bind(this)} />
+					<Animal key={animal.name} x={animal.x} y={animal.y} name={animal.name} img={animal.img} active={this.state.activeAnimal === animal.name} onClick={this.onClickAnimal.bind(this)} />
 				))}
 				<g transform={translate({x: 137, y: 37})}>
 					<circle cx="0" cy="0" r="2" fill="red" />

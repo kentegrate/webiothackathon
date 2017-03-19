@@ -23,7 +23,8 @@ class Animal extends React.Component {
 			<g transform={translate(this.props)}>
 				<g styleName="animal" data-active={this.props.active} onClick={this.onClick.bind(this)}>
 					<circle cx="0" cy="0" r="10" fill="pink" stroke={this.props.active ? 'red' : 'none'} />
-					<text x="0" y="0" fontSize="4px" textAnchor="middle" fontWeight="bold">{this.props.name}</text>
+                    <image x="-8" y="-8" width="16" height="16" href={this.props.img} />
+					<text x="0" y="15" fontSize="4px" textAnchor="middle" fontWeight="bold">{this.props.name}</text>
 				</g>
 			</g>
 		)
