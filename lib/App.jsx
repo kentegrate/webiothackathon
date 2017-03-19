@@ -62,8 +62,8 @@ class App extends React.Component {
 					this.onClickAnimal(this.state.animals[pin].name);
 				}
 			});
-        */
 		});
+        */
 	}
 
 	onClickAnimal(name) {
