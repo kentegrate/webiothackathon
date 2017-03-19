@@ -19,22 +19,22 @@ class App extends React.Component {
 				x: 100,
 				y: 35,
 				name: 'キリン',
-                img: './img/animalface_kirin.png',
+				img: './img/animalface_kirin.png',
 			}, {
 				x: 45,
 				y: 68,
 				name: 'ヘビ',
-                img: './img/hebi_blue.png',
+				img: './img/hebi_blue.png',
 			}, {
 				x: 150,
 				y: 50,
 				name: 'シマウマ',
-                img: './img/animal_shimauma.png',
+				img: './img/animal_shimauma.png',
 			}, {
 				x: 97,
 				y: 82,
 				name: 'ペンギン',
-                img: './img/penguin03_gentoo.png',
+				img: './img/penguin03_gentoo.png',
 			}],
 			activeAnimal: null,
 			pointerAngle: 0,
@@ -47,18 +47,18 @@ class App extends React.Component {
 			this.servo = servo;
 		});
 
-        this.mpr121 = navigator.requestI2CAccess().then((i2cAccess) => {
+		this.mpr121 = navigator.requestI2CAccess().then((i2cAccess) => {
 			console.log('(app) i2cAccess:', i2cAccess);
-            const i2cPort = i2cAccess.ports.get(0);
+			const i2cPort = i2cAccess.ports.get(0);
 			console.log('(app) i2cPort:', i2cPort);
-            mpr121(i2cPort).addEventListener('stateChange', (pin, state) => {
+			mpr121(i2cPort).addEventListener('stateChange', (pin, state) => {
 				console.log('(app) pin:', pin);
 				console.log('(app) state:', state);
-                if(state) {
-                    this.onClickAnimal(this.state.animals[pin].name);
-                }
-            });
-        });
+				if(state) {
+					this.onClickAnimal(this.state.animals[pin].name);
+				}
+			});
+		});
 	}
 
 	onClickAnimal(name) {
