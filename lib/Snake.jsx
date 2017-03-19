@@ -22,7 +22,8 @@ class Snake extends React.Component {
 		}).then((sensor) => {
 			setInterval(() => {
 				const voltage = sensor.read();
-				this.setState({angle: (160 - voltage) / 2 + 10});
+				console.log('(app) voltage:', voltage);
+				this.setState({angle: Math.PI - voltage});
 			}, 100);
 		});
 	}
