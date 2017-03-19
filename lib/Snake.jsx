@@ -12,6 +12,8 @@ class Snake extends React.Component {
 	constructor(props, state) {
 		super(props, state);
 
+		this.rolling = false;
+
 		this.state = {
 			angle: Math.PI / 2,
 		};
@@ -24,6 +26,15 @@ class Snake extends React.Component {
 				const voltage = sensor.read();
 				console.log('(app) voltage:', voltage);
 				this.setState({angle: Math.PI - voltage});
+
+				if (voltage < 2) {
+					if (this.rolling === false) {
+						this.props.onRoll();
+					}
+					this.rolling = true;
+				} else {
+					this.rolling = false;
+				}
 			}, 100);
 		});
 	}
