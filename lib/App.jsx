@@ -48,8 +48,12 @@ class App extends React.Component {
 		});
 
         this.mpr121 = navigator.requestI2CAccess().then((i2cAccess) => {
+			console.log('(app) i2cAccess:', i2cAccess);
             const i2cPort = i2cAccess.ports.get(0);
+			console.log('(app) i2cPort:', i2cPort);
             mpr121(i2cPort).addEventListener('stateChange', (pin, state) => {
+				console.log('(app) pin:', pin);
+				console.log('(app) state:', state);
                 if(state) {
                     this.onClickAnimal(this.state.animals[pin].name);
                 }
