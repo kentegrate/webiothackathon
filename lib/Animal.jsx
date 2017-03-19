@@ -24,6 +24,9 @@ class Animal extends React.Component {
 				<g styleName="animal" data-active={this.props.active} onClick={this.onClick.bind(this)}>
 					<circle cx="0" cy="0" r="10" fill="pink" stroke={this.props.active ? 'red' : 'none'} />
                     <image x="-8" y="-8" width="16" height="16" xlinkHref={this.props.img} />
+					{this.props.active && (
+						<circle styleName="hollow" cx="0" cy="0" r="10" fill="none" stroke="red" />
+					)}
 					<text x="0" y="15" fontSize="4px" textAnchor="middle" fontWeight="bold">{this.props.name}</text>
 				</g>
 			</g>
