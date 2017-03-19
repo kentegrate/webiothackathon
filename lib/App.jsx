@@ -35,9 +35,12 @@ class App extends React.Component {
 		};
 
 		this.pca9685 = navigator.requestI2CAccess().then((i2cAccess) => {
+			console.warn('i2cAccess:', i2cAccess);
 			const i2cPort = i2cAccess.ports.get(0);
+			console.warn('i2cPort:', i2cPort);
 			return pca9685(i2cPort);
 		}).then((servo) => {
+			console.warn('servo:', servo);
 			this.servo = servo;
 		});
 	}
@@ -47,6 +50,7 @@ class App extends React.Component {
 		const activeAnimal = this.state.animals.find((animal) => animal.name === name);
 
 		if (this.servo) {
+			console.warn('this.servo:', this.servo);
 			this.servo.setServo(0, angle(currentPlace, activeAnimal) / Math.PI * 180)
 		}
 	}
