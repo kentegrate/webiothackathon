@@ -6,6 +6,7 @@ const Animal = require('./Animal.jsx');
 const styles = require('./App.css');
 const {translate, rotate, distance, angle} = require('./util.js');
 const pca9685 = require('./PCA9685.js')
+const mpr121 = require('./MPR121.js')
 
 const currentPlace = {x: 137, y: 37};
 
@@ -45,6 +46,15 @@ class App extends React.Component {
 		}).then((servo) => {
 			this.servo = servo;
 		});
+
+        this.mpr121 = navigator.requestI2CAccess().then((i2cAccess) => {
+            const i2cPort = i2cAccess.ports.get(0);
+            mpr121(i2cPort).addEventListener('stateChange', (pin, state) => {
+                if(state) {
+                    this.onClickAnimal(this.state.animals[pin].name);
+                }
+            });
+        });
 	}
 
 	onClickAnimal(name) {
