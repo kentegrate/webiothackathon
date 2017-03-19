@@ -6,7 +6,7 @@ const Animal = require('./Animal.jsx');
 const styles = require('./App.css');
 const {translate, rotate, distance, angle} = require('./util.js');
 const pca9685 = require('./PCA9685.js')
-//const mpr121 = require('./MPR121.js')
+const mpr121 = require('./MPR121.js')
 
 const currentPlace = {x: 137, y: 37};
 
@@ -48,7 +48,7 @@ class App extends React.Component {
 		}).then((servo) => {
 			this.servo = servo;
 		});
-/*
+
 		this.mpr121 = navigator.requestI2CAccess().then((i2cAccess) => {
 			console.log('(app) i2cAccess:', i2cAccess);
 			const i2cPort = i2cAccess.ports.get(0);
@@ -63,35 +63,24 @@ class App extends React.Component {
 				}
 			});
 		});
-        */
-
-		navigator.requestGPIOAccess().then((gpio) => {
-			button_port(gpio).setHandler((state) => {
-				if (state) {
-					this.onClickAnimal(this.state.animals[2].name);
-				}
-			});
-		});
 	}
 
 	onClickAnimal(name) {
 		this.setState({activeAnimal: name});
 		const activeAnimal = this.state.animals.find((animal) => animal.name === name);
 
-        Promise.new(() => {
-		    if(this.myAudio) {
-                this.myAudio.load();
-                this.myAudio.play();
-            }
-        }).then(() => {
-            if (this.servo) {
-                const pointerAngle = angle(currentPlace, activeAnimal) / Math.PI * 180 + 90;
-                const servoAngle = 180 - (pointerAngle + 90 + 360 - 45) % 180;
-                this.setState({pointerAngle});
-                this.servo.setServo(0, servoAngle)
-            }
-        });
-    }
+		if(this.myAudio) {
+			this.myAudio.load();
+			this.myAudio.play();
+		}
+
+		if (this.servo) {
+			const pointerAngle = angle(currentPlace, activeAnimal) / Math.PI * 180 + 90;
+			const servoAngle = 180 - (pointerAngle + 90 + 360 - 45) % 180;
+			this.setState({pointerAngle});
+			this.servo.setServo(0, servoAngle)
+		}
+	}
 
 	onSnakeRoll() {
 		this.onClickAnimal('ヘビ');
