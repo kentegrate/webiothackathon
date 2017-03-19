@@ -4,7 +4,7 @@ const CSSModules = require('react-css-modules');
 const Snake = require('./Snake.jsx');
 const Animal = require('./Animal.jsx');
 const styles = require('./App.css');
-const {translate, distance, angle} = require('./util.js');
+const {translate, rotate, distance, angle} = require('./util.js');
 const pca9685 = require('./PCA9685.js')
 
 const currentPlace = {x: 137, y: 37};
@@ -36,6 +36,7 @@ class App extends React.Component {
                 img: './img/penguin03_gentoo.png',
 			}],
 			activeAnimal: null,
+			pointerAngle: 0,
 		};
 
 		this.pca9685 = navigator.requestI2CAccess().then((i2cAccess) => {
@@ -51,7 +52,9 @@ class App extends React.Component {
 		const activeAnimal = this.state.animals.find((animal) => animal.name === name);
 
 		if (this.servo) {
-			const servoAngle = 180 - (angle(currentPlace, activeAnimal) / Math.PI * 180 + 180 + 360 - 45) % 180;
+			const pointerAngle = angle(currentPlace, activeAnimal) / Math.PI * 180 + 90;
+			const servoAngle = 180 - (pointerAngle + 90 + 360 - 45) % 180;
+			this.setState({pointerAngle});
 			this.servo.setServo(0, servoAngle)
 		}
 	}
@@ -66,6 +69,7 @@ class App extends React.Component {
 					<Animal key={animal.name} x={animal.x} y={animal.y} name={animal.name} img={animal.img} active={this.state.activeAnimal === animal.name} onClick={this.onClickAnimal.bind(this)} />
 				))}
 				<g transform={translate({x: 137, y: 37})}>
+					<polygon styleName="pointer" points="0, -5 1, -3 -1, -3" fill="red" style={{transform: rotate(this.state.pointerAngle)}}/>
 					<circle cx="0" cy="0" r="2" fill="red" />
 					<text x="0" y="7" fontSize="5" textAnchor="middle">現在地</text>
 				</g>
