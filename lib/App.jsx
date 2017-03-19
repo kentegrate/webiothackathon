@@ -48,7 +48,7 @@ class App extends React.Component {
 					<circle cx="0" cy="0" r="2" fill="red" />
 					<text x="0" y="7" fontSize="5" textAnchor="middle">現在地</text>
 				</g>
-				<Snake x={0} y={0} />
+				<Snake x={33} y={51} />
 				{this.state.animals.map((animal) => (
 					<Animal key={animal.name} x={animal.x} y={animal.y} name={animal.name} active={this.state.activeAnimal === animal.name} onClick={this.onClickAnimal.bind(this)} />
 				))}
