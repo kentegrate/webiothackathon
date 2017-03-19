@@ -65,7 +65,7 @@ class App extends React.Component {
 		});
         */
 
-		this.navigator.requestGPIOAccess().then((gpio) => {
+		navigator.requestGPIOAccess().then((gpio) => {
 			button_port(gpio).setHandler((state) => {
 				if (state) {
 					this.onClickAnimal(this.state.animals[2].name);
