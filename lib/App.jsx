@@ -56,7 +56,7 @@ class App extends React.Component {
 		return (
 			<svg styleName="root" viewBox="0 0 200 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
 				<image x="0" y="0" width="100%" height="100%" xlinkHref="img/park_editable.svg" />
-				<text x="100" y="15" fontSize="10" textAnchor="middle">上野動物園 西園 案内図</text>
+				<text x="10" y="15" fontSize="8" textAnchor="left">上野動物園 西園 案内図</text>
 				<Snake x={33} y={51} />
 				{this.state.animals.map((animal) => (
 					<Animal key={animal.name} x={animal.x} y={animal.y} name={animal.name} active={this.state.activeAnimal === animal.name} onClick={this.onClickAnimal.bind(this)} />
