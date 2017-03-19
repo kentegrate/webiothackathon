@@ -13,7 +13,7 @@ class Snake extends React.Component {
 		super(props, state);
 
 		this.state = {
-			angle: Math.PI / 180 * 90,
+			angle: 0,
 		};
 
 		navigator.requestI2CAccess().then((i2cAccess) => {
@@ -23,7 +23,7 @@ class Snake extends React.Component {
 			setInterval(() => {
 				const voltage = sensor.read();
 				console.log("voltage:", voltage);
-				this.setState({angle: voltage / 2});
+				this.setState({angle: (160 - voltage) / 2 + 50});
 			}, 100);
 		});;
 	}
