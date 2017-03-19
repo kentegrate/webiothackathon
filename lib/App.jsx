@@ -55,7 +55,9 @@ class App extends React.Component {
 			this.servo = servo;
 			touchSensor.addEventListener('stateChange', (pin, state) => {
 				if (state) {
-					this.onClickAnimal(this.state.animals[pin].name);
+                    console.log('(app) pin:', pin);
+                    console.log('(app) state:', state);
+					this.onClickAnimal(this.state.animals[pin - 4].name);
 				}
 			});
 		});
